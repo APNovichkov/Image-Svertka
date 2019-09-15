@@ -6,7 +6,24 @@
     <h2 class="page-title">Image Editor</h2>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="text-center">
+                <h5>Original Image</h5>
+                <img src="{{ original_img_path }}" alt="original image" style="width: 100%;">
+            </div>
+        </div>
 
+        <div class="col-md-6">
+            <div class="text-center">
+                <h5>Filtered Image</h5>
+                <img src="{{ new_img_path }}" alt="filtered image" style="width: 100%;">
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 {% endblock %}
