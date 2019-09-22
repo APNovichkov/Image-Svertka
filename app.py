@@ -41,12 +41,13 @@ f_custom = (np.array([
 
 @app.route('/')
 def index():
-    original_img_path = os.path.join(app.config['DOWNLOAD_FOLDER'], 'la_sunset_1.jpg')
+    original_img_path = os.path.join(app.config['DOWNLOAD_FOLDER'], 'la_sunset.jpg')
     orignal_img = img.imread(original_img_path)
 
-    new_img = apply_filter(orignal_img, f_outline)
+    new_img_1 = apply_filter(orignal_img, f_blur)
+    new_img = apply_filter(new_img_1, f_blur)
     new_img = new_img.astype('uint8')
-    new_img_path = os.path.join(app.config['UPLOAD_FOLDER'], 'la_sunset_1.jpg')
+    new_img_path = os.path.join(app.config['UPLOAD_FOLDER'], 'la_sunset_3.jpg')
 
     img.imsave(new_img_path, new_img)
 
