@@ -3,7 +3,6 @@ from flask import Flask
 from mongo_api import DataProvider
 from flask_cors import CORS
 import json
-from bson import ObjectId
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +12,7 @@ PROPS_TO_STR = ['_id', 'fs_id', 'image_id']
 
 
 # Should return json with all of the images that are stored in mongoDB
-@app.route("/imgs/")
+@app.route("/imgs")
 def list_all_images():
     output = []
     for row in dp.list_images({}):
@@ -41,6 +40,6 @@ def get_image(id):
     resp.content_type = "image/jpg"
     return resp
 
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
