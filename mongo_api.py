@@ -8,6 +8,7 @@ from pymongo import MongoClient
 import gridfs
 import os
 from bson import ObjectId
+import matplotlib.image as img
 
 
 class DataProvider:
@@ -51,14 +52,39 @@ class DataProvider:
     def get_image(self, imageID):
         return self.fs.get(ObjectId(imageID)).read()
 
+    def get_image_with_filter(self, imageId, filter):
+        original_img = None
+        for currant_image in self.img_cl.find({'fs_id': imageId}):
+            original_img = img.imread(currant_image['path'])
+
+        ROWS = original_img.shape[0]
+        COLS = original_img.shape[1]
+
+        filtered_image = np.zeros((ROWS, COLS, 3), dtype=int).tolist()
+        for k in range(3):
+            for i in range(ROWS - 2):
+                for j in range(COLS - 2):
+                    sum = 0
+                    for ii in range(3):
+                        for jj in range(3):
+                            sum += original_img[i + ii][j + jj][k] * filter[ii][jj]
+                    filtered_image[i + 1][j + 1][k] = int(sum)
+        filtered_image = np.array(filtered_image)
+        return np.clip(filtered_image, 0, 255)
+
 
 if __name__ == "__main__":
-    add_image('San Francisco', 'City', 'United States', '/Users/andreynovichkov/Desktop/to-post-in-august/_DSC0569.jpg')
+    dp = DataProvider()
+    print(dp.get_image_with_filter('5d89b79a771bb11d8b28c91c', ""))
+
+    # base_dir = "/Users/andreynovichkov/Desktop/Make-School/Personal-projects/Image-editing/static/original_images"
+    # dp = DataProvider()
+    # dp.add_image('Oregon Waterfall', 'Nature', 'United States', base_dir + '/waterfall.jpg')
 
     # remove_image({'name': 'San Francisco'})
 
-    fout = open("/Users/andreynovichkov/Desktop/sf_test.jpg", "wb")
-    fout.write(get_image(img_cl.find_one({'name': 'San Francisco'})['fs_id']))
+    # fout = open("/Users/andreynovichkov/Desktop/sf_test.jpg", "wb")
+    # fout.write(get_image(img_cl.find_one({'name': 'San Francisco'})['fs_id']))
 
-    for row in list_images():
-        print(row)
+    # for row in dp.list_images():
+    #    print(row)

@@ -10,8 +10,12 @@ dp = DataProvider()
 
 PROPS_TO_STR = ['_id', 'fs_id', 'image_id']
 
+# app configurations for uploading files
+app.config['UPLOAD_FOLDER'] = "/Users/andreynovichkov/Desktop/Make-School/Personal-projects/Image-editing/static/uploaded_images"
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-# Should return json with all of the images that are stored in mongoDB
+
+# Return json with all of the images that are stored in mongoDB
 @app.route("/imgs")
 def list_all_images():
     output = []
@@ -34,6 +38,8 @@ def _to_str(row, props):
 def index():
     return "Hello"
 
+
+# Returns an image given an fs_id
 @app.route("/imgs/<string:id>")
 def get_image(id):
     resp = flask.make_response(dp.get_image(id))
