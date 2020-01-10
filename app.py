@@ -41,13 +41,13 @@ f_custom = (np.array([
 
 @app.route('/')
 def index():
-    original_img_path = os.path.join(app.config['DOWNLOAD_FOLDER'], 'waterfall.jpg')
+    original_img_path = os.path.join(app.config['DOWNLOAD_FOLDER'], 'Profile_picture.jpg')
     original_img = img.imread(original_img_path)
 
     # new_img_1 = apply_filter(orignal_img, f_blur)
     new_img = apply_filter(original_img, f_outline)
     new_img = new_img.astype('uint8')
-    new_img_path = os.path.join(app.config['UPLOAD_FOLDER'], 'waterfall_outline.jpg')
+    new_img_path = os.path.join(app.config['UPLOAD_FOLDER'], 'Profile_picture_outline.jpg')
 
     img.imsave(new_img_path, new_img)
 
